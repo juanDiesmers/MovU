@@ -64,6 +64,40 @@ public static class MovUCompilar
         Debug.Log(sb.ToString());
     }
 
+    /// <summary>
+    /// Deja Builds/MovU_<Plataforma>.zip con la carpeta entera de la plataforma,
+    /// para subirlo como archivo de un Release de GitHub (los compilados no van
+    /// en el repositorio: Builds/ está en .gitignore).
+    /// Ojo: un zip hecho en Windows no guarda el permiso de ejecución de Linux y
+    /// Mac; en esos sistemas hay que darlo a mano (ver el README).
+    /// </summary>
+    private static string Comprimir(Destino d)
+    {
+        try
+        {
+            string carpeta = Path.GetDirectoryName(d.ruta);
+            string zip = Path.Combine(Carpeta, $"MovU_{d.nombre}.zip");
+            if (File.Exists(zip)) File.Delete(zip);
+            // Sin las carpetas "..._DoNotShip" (símbolos de depuración de Burst/IL2CPP).
+            using (var archivo = System.IO.Compression.ZipFile.Open(zip, System.IO.Compression.ZipArchiveMode.Create))
+            {
+                string raiz = Path.GetFullPath(carpeta);
+                foreach (string f in Directory.GetFiles(raiz, "*", SearchOption.AllDirectories))
+                {
+                    string relativo = f.Substring(raiz.Length).TrimStart('\\', '/').Replace('\\', '/');
+                    if (relativo.Contains("DoNotShip")) continue;
+                    System.IO.Compression.ZipFileExtensions.CreateEntryFromFile(archivo, f, relativo,
+                        System.IO.Compression.CompressionLevel.Optimal);
+                }
+            }
+            return $"comprimido en {zip} ({new FileInfo(zip).Length / (1024f * 1024f):F0} MB)";
+        }
+        catch (System.Exception e)
+        {
+            return "no se pudo comprimir: " + e.Message;
+        }
+    }
+
     private static bool Instalado(Destino d) => BuildPipeline.IsBuildTargetSupported(d.grupo, d.target);
 
     private static void Compilar(IEnumerable<Destino> destinos)
@@ -103,6 +137,7 @@ public static class MovUCompilar
                 resumen.AppendLine(s.result == BuildResult.Succeeded
                     ? $"  {d.nombre}: listo en {d.ruta} ({s.totalSize / (1024f * 1024f):F0} MB, {s.totalTime.TotalSeconds:F0} s)"
                     : $"  {d.nombre}: {s.result} ({s.totalErrors} errores). Revisa la consola.");
+                if (s.result == BuildResult.Succeeded) resumen.AppendLine("      " + Comprimir(d));
             }
         }
         finally

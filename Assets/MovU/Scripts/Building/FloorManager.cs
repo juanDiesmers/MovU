@@ -50,6 +50,7 @@ public class FloorManager : MonoBehaviour
 
     private int pisoActual;
     private bool iniciado;
+    private bool mostrarTodos;
     private CharacterController controlador;
 
     public int CantidadDePisos => pisos.Count;
@@ -305,7 +306,10 @@ public class FloorManager : MonoBehaviour
         for (int i = 0; i < pisos.Count; i++)
         {
             bool visible = Mathf.Abs(i - pisoActual) <= pisosVecinosCargados;
-            Encender(pisos[i], visible);
+            // En el menú principal (VitrinaMenu) se ve el edificio entero desde
+            // afuera: se enciende la geometría de todos los pisos, pero no su
+            // contenido (NPC, puertas, rótulos), que sigue la regla de siempre.
+            Encender(pisos[i], visible || mostrarTodos);
 
             // El contenido puesto a mano vive fuera de la jerarquia del piso
             // (en Contenido/Piso_N, que BuildingSetup nunca borra), asi que hay
@@ -314,6 +318,20 @@ public class FloorManager : MonoBehaviour
             if (i < contenidoPorPiso.Count) Encender(contenidoPorPiso[i], visible);
         }
     }
+
+    /// <summary>
+    /// True: enciende la geometría de todos los pisos (para ver el edificio
+    /// completo desde afuera en el menú principal). False: vuelve a dejar solo
+    /// el piso del jugador.
+    /// </summary>
+    public void MostrarTodosLosPisos(bool todos)
+    {
+        if (mostrarTodos == todos) return;
+        mostrarTodos = todos;
+        if (iniciado) RefrescarActivos();
+        else if (todos) for (int i = 0; i < pisos.Count; i++) Encender(pisos[i], true);
+    }
+
 
     private static void Encender(Transform t, bool visible)
     {
