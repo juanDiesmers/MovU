@@ -42,8 +42,8 @@ compilados de Windows, Linux y Mac están en
 **Sobre las verificaciones.** Las rutas de las 13 misiones y de los 139 POIs se verificaron en
 el editor con la *caminata automática* (`MovU > Depuracion en Play`), que mueve al personaje
 por el NavMesh y toma el ascensor. Cuatro participantes jugaron con teclado y ratón, uno de
-ellos en el ejecutable de Windows. Los casos de prueba CP-01 a CP-15 del documento de control
-de calidad no se corrieron uno a uno.
+ellos en el ejecutable de Windows. Los casos de prueba CP-01 a CP-13 del documento de control
+de calidad se corrieron uno a uno.
 
 Las corridas automáticas dejan filas en `movu_metrics_v2.csv` con el participante `auto`
 (filtrarlas antes de analizar) y no guardan progreso. Los récords se restauran al salir de Play.
@@ -650,8 +650,7 @@ El contenido quedó congelado en la v1.0. Lo que no alcanzó a entrar:
 2. Que la flecha indique subir o bajar al cambiar de piso, poder correr y una escalera
    principal más parecida a la real (pedidos de los participantes).
 3. Incluir la escalera principal en la ruta óptima y en la flecha.
-4. Correr los casos de prueba CP-01 a CP-15 en el ejecutable y verificar los compilados de
-   Linux y Mac.
+4. Verificar los compilados de Linux y Mac.
 5. Limpieza: `_Previews/`, `planta_reconstruida.png` en la raíz y los modelos de Meshy que ya
    no usa la escena (`MovU > Rendimiento > Informe de presupuesto` los lista).
 
