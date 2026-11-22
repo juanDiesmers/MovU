@@ -11,40 +11,45 @@ Ese registro es la evidencia experimental de la tesis.
 
 ---
 
-## 1. Estado actual (10 de noviembre de 2026)
+## 1. Estado de la versión entregada (v1.0, 22 de noviembre de 2026)
+
+Esta es la versión que se entregó como trabajo de grado el 22 de noviembre de 2026. Los
+compilados de Windows, Linux y Mac están en
+[Releases](https://github.com/juanDiesmers/MovU/releases/tag/v1.0), un .zip por plataforma.
 
 | Parte | Estado |
 |---|---|
-| Mecánicas base (misiones, flecha de guía, métricas CSV, récord) | ✅ Funcionando en `DemoMaze` y en el edificio |
-| Personaje en 1ª / 3ª persona (`CameraRig`) | ✅ |
+| Mecánicas base (misiones, flecha de guía, métricas CSV, récord) | ✅ En `DemoMaze` y en el edificio |
+| Personaje en 1.ª / 3.ª persona (`CameraRig`) | ✅ |
 | Edificio de 11 pisos (3 a 13) con plantas trazadas desde los planos de evacuación | ✅ `Edificio.unity`; 5.100 a 11.700 triángulos por piso |
 | Ascensores en las tres puertas reales de cada lobby + carga por piso | ✅ |
-| Escalera de emergencia y escalera principal funcionales (pisos 4 a 13) | ✅ Con la caminata automática; **falta probarlas con teclado** |
+| Escalera de emergencia y escalera principal (pisos 4 a 13) | ✅ Jugadas con teclado y ratón |
 | Contenido como datos (`contenido_piso9.json`): 139 POIs, 13 misiones, 165 puertas, 7 objetos | ✅ |
 | 185 personas (NPC) en los once pisos | ✅ Dan indicaciones; los visitantes no |
-| NavMesh común de los once pisos | ✅ Horneado (`Scenes/Edificio_NavMesh.asset`) |
-| Flecha de guía entre pisos (ascensor o escalera de emergencia, la más corta) | ✅ Las 13 misiones completas con la caminata automática; la escalera principal no entra en la ruta óptima |
+| NavMesh común de los once pisos | ✅ `Scenes/Edificio_NavMesh.asset` |
+| Flecha de guía entre pisos (ascensor o escalera de emergencia, la más corta) | ✅ La escalera principal no entra en la ruta óptima |
 | Métricas por misión (`movu_metrics_v2.csv`, 36 columnas) | ✅ |
-| Guardado del progreso por participante y opciones (`SaveSystem`) | ✅ 7 nov; **falta verificarlo en el ejecutable** |
-| Pantalla de carga, menú principal, opciones y pausa con `P` (`MenuPrincipal`) | ✅ 7 nov |
-| Entorno del campus visto por las ventanas (OpenStreetMap) | ✅ 7 nov; sin colisión |
-| Compilados Windows / Linux / Mac (`MovU > Compilar`) | ⚠️ El comando existe; **ningún compilado se ha probado fuera del editor** |
-| Pruebas automáticas (Test Runner, modo edición) | ✅ 59 de 59 (21 oct); el guardado y el menú no tienen pruebas |
-| Sonido | ⚠️ **Nadie lo ha escuchado todavía** |
-| Occlusion Culling horneado | ⚠️ Sin confirmar (hay menú: `MovU > Rendimiento`) |
-| Modo de movilidad reducida (RF-14) y evento dinámico (RF-15) | ❌ Sin iniciar (alcance objetivo) |
+| Guardado del progreso por participante y opciones (`SaveSystem`) | ✅ |
+| Pantalla de carga, menú principal con el edificio girando, controles, opciones y pausa con `P` | ✅ (7 y 20 nov) |
+| Niveles de gráficos Bajo, Medio y Alto (`CalidadGrafica`) | ✅ 20 nov |
+| Entorno del campus visto por las ventanas (OpenStreetMap) | ✅ Sin colisión |
+| Sonido | ✅ Escuchado en el juego |
+| Compilados Windows / Linux / Mac (`MovU > Compilar`) | ✅ El de Windows se jugó en las pruebas con usuarios; Linux y Mac sin verificar |
+| Pruebas automáticas (Test Runner, modo edición) | ✅ 59 de 59; el guardado, el menú y los gráficos no tienen pruebas |
+| Pruebas con usuarios (H5) | ✅ 4 participantes (11 a 17 nov): SUS medio 82,5 |
+| Modo de movilidad reducida (RF-14) y evento dinámico (RF-15) | ❌ No se hicieron (alcance objetivo) |
 
-**Qué quiere decir "probado" aquí.** Casi todo se verificó en el editor con la *caminata
-automática* (`MovU > Depuracion en Play`), que mueve al personaje con su propio
-`CharacterController` por la ruta del NavMesh y toma el ascensor. Eso prueba colisiones,
-puertas, llegada, inventario y métricas. **No** prueba lo que depende de una persona: cómo se
-siente con teclado y ratón, cómo suena, ni cómo se comporta el ejecutable.
+**Sobre las verificaciones.** Las rutas de las 13 misiones y de los 139 POIs se verificaron en
+el editor con la *caminata automática* (`MovU > Depuracion en Play`), que mueve al personaje
+por el NavMesh y toma el ascensor. Cuatro participantes jugaron con teclado y ratón, uno de
+ellos en el ejecutable de Windows. Los casos de prueba CP-01 a CP-15 del documento de control
+de calidad no se corrieron uno a uno.
 
 Las corridas automáticas dejan filas en `movu_metrics_v2.csv` con el participante `auto`
 (filtrarlas antes de analizar) y no guardan progreso. Los récords se restauran al salir de Play.
 
-Último commit: `Compilar Windows, Linux y Mac con un solo comando (MovUBuilds)` (7 nov).
-Los documentos (GDD v0.6, SRS v0.4, SDD v0.3, SPMP v0.4 y memoria v0.3) están en Google Drive.
+Los documentos del trabajo de grado (memoria, SPMP, SRS, SDD, GDD y documento de control de
+calidad, todos en v1.1) se entregaron en PDF por correo.
 
 ### Decisiones ya tomadas (no volver a discutirlas sin motivo)
 
@@ -244,7 +249,7 @@ Si esos números se ven raros, la escala está mal antes de que el juego siquier
 | `P` | Pausa: continuar, opciones, volver al menú (la misión en curso queda como abortada) o salir. Congela el reloj |
 
 Al dar Play en el edificio aparecen la **pantalla de carga** y el **menú principal**
-(Comenzar · Opciones · Salir; se quitan con `"menuPrincipal": false`) y después el **panel de
+(Comenzar · Controles · Opciones · Salir; se quitan con `"menuPrincipal": false`) y después el **panel de
 sesión**: identificador del participante y condición de guía (libre o un modo fijo). Si ese
 participante ya tiene misiones completadas, el panel ofrece continuar en la primera pendiente.
 Enter para empezar. El panel se quita con `"pedirParticipante": false` en el JSON.
@@ -637,24 +642,18 @@ limpieza). Los modelos crudos van en `_ModelosCrudos/`, que está en `.gitignore
 
 ---
 
-## 8. Qué falta (en orden)
+## 8. Trabajo futuro
 
-El contenido está congelado hasta la entrega. Lo que queda:
+El contenido quedó congelado en la v1.0. Lo que no alcanzó a entrar:
 
-1. **Probar un compilado fuera del editor** (`MovU > Compilar > Windows`) en el equipo de las
-   pruebas: arranque, menú, guardado (cerrar y volver a abrir), CSV en `AppData\LocalLow` y
-   FPS (RD-1 a RD-3).
-2. **Jugar con teclado, ratón y audífonos** al menos M01 a M05, las dos escaleras y el ascensor.
-3. **Pruebas con usuarios (H5):** formularios y hoja de resultados en Drive; guion y casos en el
-   documento de control de calidad (Anexo G).
-4. **Antes de la entrega:** poner en `ProjectSettings` el nombre del producto (hoy `MovU_Demo`),
-   la compañía (hoy `DefaultCompany`) y la versión (hoy `0.1.0`) **después** de las pruebas,
-   porque cambiarlos mueve la carpeta del CSV y del guardado. Publicar los compilados en
-   GitHub Releases (`Builds/` no se versiona), dejar el repositorio público y etiquetar `v1.0`.
-5. **Limpieza:** `_Previews/`, `planta_reconstruida.png` en la raíz y los modelos de Meshy que
-   ya no usa la escena (`MovU > Rendimiento > Informe de presupuesto` los lista).
-6. Si sobra tiempo, en este orden: movilidad reducida (RF-14), evento dinámico (RF-15),
-   escalera principal en la ruta óptima.
+1. Modo de movilidad reducida (RF-14) y evento dinámico de cierre (RF-15).
+2. Que la flecha indique subir o bajar al cambiar de piso, poder correr y una escalera
+   principal más parecida a la real (pedidos de los participantes).
+3. Incluir la escalera principal en la ruta óptima y en la flecha.
+4. Correr los casos de prueba CP-01 a CP-15 en el ejecutable y verificar los compilados de
+   Linux y Mac.
+5. Limpieza: `_Previews/`, `planta_reconstruida.png` en la raíz y los modelos de Meshy que ya
+   no usa la escena (`MovU > Rendimiento > Informe de presupuesto` los lista).
 
 Nota: el SSAO **ya está activo** en `Assets/Settings/PC_Renderer.asset`; no hay que activarlo.
 

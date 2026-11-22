@@ -39,7 +39,7 @@ public static class HudBuilder
 
         // --- Arriba a la izquierda: misión ------------------------------
         GameObject cajaMision = Caja("Mision", raiz.transform, new Vector2(0f, 1f), new Vector2(0f, 1f),
-                                     new Vector2(36f, -32f), new Vector2(760f, 128f));
+                                     new Vector2(36f, -32f), new Vector2(900f, 176f));
         TextMeshProUGUI txtContador = Texto("Contador", cajaMision.transform, 24f, Tenue,
                                             TextAlignmentOptions.TopLeft);
         Colocar(txtContador.rectTransform, new Vector2(0f, 1f), new Vector2(1f, 1f),
@@ -48,6 +48,11 @@ public static class HudBuilder
         TextMeshProUGUI txtObjetivo = Texto("Enunciado", cajaMision.transform, 30f, Tinta,
                                             TextAlignmentOptions.TopLeft);
         txtObjetivo.textWrappingMode = TextWrappingModes.Normal;
+        // D-01: los enunciados largos (hasta 113 caracteres) necesitan tres líneas.
+        // El cuadro creció a 900 x 176 y el texto se achica solo si aun así no cabe.
+        txtObjetivo.enableAutoSizing = true;
+        txtObjetivo.fontSizeMin = 20f;
+        txtObjetivo.fontSizeMax = 30f;
         Colocar(txtObjetivo.rectTransform, new Vector2(0f, 0f), new Vector2(1f, 1f),
                 new Vector2(22f, 12f), new Vector2(-22f, -46f));
 
